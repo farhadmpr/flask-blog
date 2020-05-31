@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="" method="post">
+        {{ form.csrf_token }}
+
+        <div>
+            {{ form.username.label(class='form-control-label') }}:
+            {{ form.username(class='form-control') }}
+        </div>
+        <div>
+            {{ form.email.label(class='form-control-label') }}:
+            {{ form.email(class='form-control') }}
+        </div>
+        <div>
+            {{ form.password.label(class='form-control-label') }}:
+            {{ form.password(class='form-control') }}
+        </div>
+        <div>
+            {{ form.confirm_password.label(class='form-control-label') }}:
+            {{ form.confirm_password(class='form-control') }}
+        </div>
+        <div>
+            {{ form.submit(class='btn btn-primary') }}
+        </div>
+    </form>
+{% endblock content %}
