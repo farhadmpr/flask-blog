@@ -4,12 +4,6 @@
     <form action="" method="post">
         {{ form.csrf_token }}
 
-        <ul>
-            {% for error in form.confirm_password.errors %}
-              <li style="color: red;">{{ error }} </li>          
-            {% endfor %}
-        </ul>
-
         <div class="form-group">
             {{ form.username.label(class='form-control-label') }}:
             {{ form.username(class='form-control') }}
@@ -25,6 +19,11 @@
         <div class="form-group">
             {{ form.confirm_password.label(class='form-control-label') }}:
             {{ form.confirm_password(class='form-control') }}
+            <ul>
+                {% for error in form.confirm_password.errors %}
+                  <li style="color: red;">{{ error }} </li>          
+                {% endfor %}
+            </ul>            
         </div>
         
         {{ form.submit(class='btn btn-primary') }}
