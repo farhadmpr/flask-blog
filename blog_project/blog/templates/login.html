@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="" method="post">
+        {{ form.csrf_token }}
+
+        <div class="form-group">
+            {{ form.email.label(class='form-control-label') }}:
+            {{ form.email(class='form-control') }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label(class='form-control-label') }}:
+            {{ form.password(class='form-control') }}
+        </div>
+        <div class="form-group">
+            {{ form.remember.label(class='form-control-label') }}:
+            {{ form.remember() }}
+        </div>
+
+        <input type="submit" value="Login" class="btn btn-primary">
+    </form>
+{% endblock content %}
