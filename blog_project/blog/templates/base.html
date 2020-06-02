@@ -7,10 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    {% include 'inc/navbar.html' %}
-    {% include 'inc/messages.html' %}
+    {% include 'inc/navbar.html' %}    
         
     <div class="jumbotron">
+        {% include 'inc/messages.html' %}
         {% block content %} {% endblock %}
     </div>
 </body>
