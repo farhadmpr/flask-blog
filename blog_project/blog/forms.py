@@ -1,6 +1,19 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms import (
+    StringField,
+    PasswordField,
+    BooleanField,
+    SubmitField
+)
+from wtforms.validators import (
+    DataRequired,
+    Length,
+    Email,
+    EqualTo,
+    ValidationError
+)
+
+from .models import User
 
 
 class RegistrationForm(FlaskForm):
@@ -11,6 +24,11 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('confirm password', validators=[
                                      DataRequired(), EqualTo('password', message='confirm password error')])
     submit = SubmitField('Register')
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('this user already exist')
 
 
 class LoginForm(FlaskForm):
