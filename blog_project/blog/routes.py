@@ -7,7 +7,14 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    posts = Post.query.all()
+    return render_template('home.html', posts=posts)
+
+
+@app.route('/post/<int:post_id>')
+def detail(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('detail.html', post=post)
 
 
 @app.route('/register', methods=['GET', 'POST'])

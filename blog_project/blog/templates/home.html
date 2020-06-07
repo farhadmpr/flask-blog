@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h3>Home Page</h3>
-    <h4>{{ current_user.username }}</h4>
+    <h3>Home Page {{ current_user.username }}</h3>
+
+    <div class="card">
+        {% for post in posts %}
+            <a href="{{ url_for('detail', post_id=post.id) }}" class="card-body">{{ post.title }}</a>
+        {% endfor %}
+    </div>
 {% endblock %}
