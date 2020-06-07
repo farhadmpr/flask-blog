@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request
 from . import app, db, bcrypt
-from .forms import RegistrationForm, LoginForm, UpdateProfileForm
-from .models import User
+from .forms import RegistrationForm, LoginForm, UpdateProfileForm, PostForm
+from .models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
 
@@ -67,6 +67,22 @@ def profile():
         db.session.commit()
         flash('Update successfully', 'success')
     elif request.method == 'GET':
-        form.username.data = current_user.username    
+        form.username.data = current_user.username
 
     return render_template('profile.html', form=form)
+
+@app.route('/post/new', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(
+            title=form.title.data,
+            content=form.title.data,
+            author=current_user
+        )
+        db.session.add(post)
+        db.session.commit()
+        flash('post created')
+        return redirect(url_for('profile'))
+    return render_template('new_post.html', form=form)

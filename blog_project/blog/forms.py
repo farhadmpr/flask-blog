@@ -3,7 +3,8 @@ from wtforms import (
     StringField,
     PasswordField,
     BooleanField,
-    SubmitField
+    SubmitField,
+    TextAreaField
 )
 from wtforms.validators import (
     DataRequired,
@@ -41,3 +42,8 @@ class UpdateProfileForm(FlaskForm):
     username = StringField('user name', validators=[DataRequired(), Length(min=4, max=25)])    
     password = PasswordField('password', validators=[DataRequired()])
 
+
+class PostForm(FlaskForm):
+    title = StringField('title', validators=[DataRequired()])
+    content = TextAreaField('content', validators=[DataRequired()])
+    
