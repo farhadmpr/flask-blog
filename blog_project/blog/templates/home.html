@@ -5,7 +5,13 @@
 
     <div class="card">
         {% for post in posts %}
-            <a href="{{ url_for('detail', post_id=post.id) }}" class="card-body">{{ post.title }}</a>
+            <div class="card-body">
+                <h6>{{ post.title }}</h6>
+                <a href="{{ url_for('detail', post_id=post.id) }}" class="btn btn-info">Show</a>
+                {% if post.author == current_user %}
+                    <a href="{{ url_for('delete', post_id=post.id) }}" class="btn btn-danger">Delete</a>                                
+                {% endif %}                
+            </div>
         {% endfor %}
     </div>
 {% endblock %}

@@ -93,3 +93,15 @@ def new_post():
         flash('post created')
         return redirect(url_for('profile'))
     return render_template('new_post.html', form=form)
+
+
+@app.route('/post/<int:post_id>/delete')
+@login_required
+def delete(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash('post deleted', 'success')
+    return redirect(url_for('home'))
