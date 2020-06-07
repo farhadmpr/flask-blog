@@ -5,5 +5,5 @@
     <small>{{ post.author.username }}</small>
     <small>{{ post.date.strftime('%Y-%m-%d') }}</small>
     <hr>
-    <p>{{ post.content }}</p>
+    <p>{{ post.content|safe }}</p>
 {% endblock content %}

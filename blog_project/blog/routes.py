@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, abort
 from . import app, db, bcrypt
 from .forms import RegistrationForm, LoginForm, UpdateProfileForm, PostForm
 from .models import User, Post
@@ -105,3 +105,25 @@ def delete(post_id):
     db.session.commit()
     flash('post deleted', 'success')
     return redirect(url_for('home'))
+
+
+@app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
+@login_required
+def update(post_id):
+    post = Post.query.get_or_404(post_id)
+    
+    if post.author != current_user:
+        abort(403)
+
+    form = PostForm()
+    
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('post updated', 'success')
+        return redirect(url_for('detail', post_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+        return render_template('update.html', form=form)
