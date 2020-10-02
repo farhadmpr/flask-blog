@@ -1,5 +1,5 @@
-# flask-blog
-Small and simple blog project with flask
+# Flask-Blog
+Small and simple blog project with python3 and flask
 
 ## How to run
 1. Install python3, pip3 in your system.
