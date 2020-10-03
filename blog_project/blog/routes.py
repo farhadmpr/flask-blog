@@ -132,7 +132,7 @@ def update(post_id):
 def search():
     form = SearchForm()  
     if form.validate_on_submit():
-        posts = Post.query.filter_by(title=form.query.data).all()
+        posts = Post.query.filter(Post.title.like(f"%{form.query.data}%")).all()
         if posts:
             return render_template('search.html', posts=posts , form=form)
         else:
