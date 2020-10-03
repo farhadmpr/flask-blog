@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% include 'inc/form_errors.html' %}
+
+    <form action="" method="POST">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            {{ form.query.label(class='form-control-label') }}:
+            {{ form.query(class='form-control') }}
+        </div>
+        {{ form.submit(class='btn btn-primary') }}
+    </form>
+    
+    {% if posts %}
+        {% for post in posts %}
+        <div class="card-body">
+            <h6>{{ post.title }}</h6>
+            <a href="{{ url_for('detail', post_id=post.id) }}" class="btn btn-info">Show</a>
+            {% if post.author == current_user %}
+                <a href="{{ url_for('delete', post_id=post.id) }}" class="btn btn-danger">Delete</a>
+                <a href="{{ url_for('update', post_id=post.id) }}" class="btn btn-primary">Update</a>                                
+            {% endif %}                
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endblock content %}
