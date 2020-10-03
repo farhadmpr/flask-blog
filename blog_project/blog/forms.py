@@ -46,4 +46,8 @@ class UpdateProfileForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('title', validators=[DataRequired()])
     content = TextAreaField('content', validators=[DataRequired()])
+
+class SearchForm(FlaskForm):
+    query = StringField('Post Title', validators=[DataRequired()])
+    submit = SubmitField('Search')    
     
