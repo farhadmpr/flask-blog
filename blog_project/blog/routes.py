@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, flash, request, abort
 from . import app, db, bcrypt
-from .forms import RegistrationForm, LoginForm, UpdateProfileForm, PostForm
+from .forms import RegistrationForm, LoginForm, UpdateProfileForm, PostForm , SearchForm
 from .models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -127,3 +127,15 @@ def update(post_id):
         form.title.data = post.title
         form.content.data = post.content
         return render_template('update.html', form=form)
+
+@app.route('/post/search' , methods=['GET', 'POST'])
+def search():
+    form = SearchForm()  
+    if form.validate_on_submit():
+        posts = Post.query.filter_by(title=form.query.data).all()
+        if posts:
+            return render_template('search.html', posts=posts , form=form)
+        else:
+            flash('No such post has been found!','danger')
+            return render_template('search.html',form=form)    
+    return render_template('search.html', form=form)          
