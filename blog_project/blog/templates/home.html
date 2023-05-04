@@ -3,6 +3,7 @@
 {% block content %}
     <h3>Home Page {{ current_user.username }}</h3>
 
+    <h4>Post</h4>
     <div class="card">
         {% for post in posts %}
             <div class="card-body">
@@ -12,6 +13,18 @@
                     <a href="{{ url_for('delete', post_id=post.id) }}" class="btn btn-danger">Delete</a>
                     <a href="{{ url_for('update', post_id=post.id) }}" class="btn btn-primary">Update</a>                                
                 {% endif %}                
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <h4>Category</h4>
+
+    <div class="card">
+        {% for category in categories %}
+            <div class="card-body">
+                <h6>{{ category.category }}</h6>
+                <a href="{{ url_for('detail_category', category_id=category.id) }}" class="btn btn-info">Show</a>              
             </div>
         {% endfor %}
     </div>

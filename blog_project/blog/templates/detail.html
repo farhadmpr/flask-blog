@@ -5,5 +5,12 @@
     <small>{{ post.author.username }}</small>
     <small>{{ post.date.strftime('%Y-%m-%d') }}</small>
     <hr>
-    <p>{{ post.content|safe }}</p>
+    <p>{{ post.content }}</p>
+    
+    {% if categories %}
+    <h4>Category</h4>
+        {% for category in categories %}
+            <p>{{ category.category }}</p>
+        {% endfor %}
+    {% endif %}
 {% endblock content %}
