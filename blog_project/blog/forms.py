@@ -1,53 +1,51 @@
-from flask_wtf import FlaskForm
-from wtforms import (
-    StringField,
-    PasswordField,
-    BooleanField,
-    SubmitField,
-    TextAreaField
-)
-from wtforms.validators import (
-    DataRequired,
-    Length,
-    Email,
-    EqualTo,
-    ValidationError
-)
-
-from .models import User
+from blog import db, login_manager
+from datetime import datetime
+from flask_login import UserMixin
 
 
-class RegistrationForm(FlaskForm):
-    username = StringField('user name', validators=[
-                           DataRequired(), Length(min=4, max=25)])
-    email = StringField('user email', validators=[DataRequired(), Email()])
-    password = PasswordField('password', validators=[DataRequired()])
-    confirm_password = PasswordField('confirm password', validators=[
-                                     DataRequired(), EqualTo('password', message='confirm password error')])
-    submit = SubmitField('Register')
-
-    def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user:
-            raise ValidationError('this user already exist')
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
-class LoginForm(FlaskForm):
-    email = StringField('user email', validators=[DataRequired(), Email()])
-    password = PasswordField('password', validators=[DataRequired()])
-    remember = BooleanField('remember me')
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), unique=True, nullable=False)
+    email = db.Column(db.String(60), unique=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
+    posts = db.relationship('Post', backref='author', lazy=True)
+    categories = db.relationship('Category', backref='author', lazy=True)
 
 
-class UpdateProfileForm(FlaskForm):
-    username = StringField('user name', validators=[DataRequired(), Length(min=4, max=25)])    
-    password = PasswordField('password', validators=[DataRequired()])
+    def __repr__(self):
+        return f'{self.__class__.__name__}({self.id}, {self.username})'
 
 
-class PostForm(FlaskForm):
-    title = StringField('title', validators=[DataRequired()])
-    content = TextAreaField('content', validators=[DataRequired()])
-
-class SearchForm(FlaskForm):
-    query = StringField('Post Title', validators=[DataRequired()])
-    submit = SubmitField('Search')    
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    content = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     
+    def __repr__(self):
+        return f'{self.__class__.__name__}({self.id}, {self.title})'
+    
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(30), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    
+    def __repr__(self):
+        return f'{self.__class__.__name__}({self.id}, {self.category})'
+    
+class PostCategory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+    
+    def __repr__(self):
+        return f'{self.__class__.__name__}({self.id})'
+    
+db.create_all()
+db.session.commit()

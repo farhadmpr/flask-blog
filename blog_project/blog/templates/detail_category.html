@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+<h2>Category</h2>
+{% block content %}
+    <h3>{{ category.category }}</h3>
+    <small>{{ category.author.username }}</small>
+    <hr>
+{% endblock content %}
